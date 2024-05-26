@@ -1,11 +1,13 @@
 package org.example;
 
+import graphic.core.GraphicContext;
+import models.Player;
+
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
-public class GamePanel extends JPanel
-    implements  Runnable
-{
+public class GamePanel extends JPanel implements  Runnable  {
     final  int _baseTileSize = 16;
     final  int _scale = 3;
 
@@ -15,17 +17,14 @@ public class GamePanel extends JPanel
 
     final int _width = _tileSize * _maxScreenCol;
     final int _height = _tileSize * _maxScreenRow;
-    final int _fps = 80;
+    final int _fps = 120    ;
     final KeyHandler _keyHandler = new KeyHandler();
 
-    int _playerX = 100;
-    int _playerY = 100;
-    int _speed = 4;
+    private final Player _player = new Player();
 
     final private Thread _gameThread;
 
-    public  GamePanel()
-    {
+    public  GamePanel() throws IOException {
         this.setPreferredSize(new Dimension(_width, _height));
         this.addKeyListener(_keyHandler);
         this.setFocusable(true);
@@ -70,36 +69,22 @@ public class GamePanel extends JPanel
 
     private  void render()
     {
-        update();
+        Graphics2D graphics2D = (Graphics2D)this.getGraphics();;
+        GraphicContext gc = new GraphicContext(graphics2D, _keyHandler.get_keyBoardAction());
+        _player.update(gc);
         repaint();
     }
     private void update()
     {
-        switch (_keyHandler.get_keyBoardAction())
-        {
-            case Unknown -> {
-            }
-            case MoveUp -> {
-                _playerY -= _speed;
-            }
-            case MoveDown -> {
-                _playerY += _speed;
-            }
-            case MoveLeft -> {
-                _playerX -= _speed;
-            }
-            case MoveRight -> {
-                _playerX += _speed;
-            }
-        }
+
     }
 
     public  void paintComponent(Graphics graphics)
     {
         super.paintComponent(graphics);
         Graphics2D graphics2D = (Graphics2D) graphics;
-        graphics2D.setColor(Color.black);
-        graphics2D.fillRect(_playerX,_playerY, _tileSize, _tileSize);
+        GraphicContext gc = new GraphicContext(graphics2D, _keyHandler.get_keyBoardAction());
+        _player.draw(gc);
         graphics2D.dispose();
     }
 }

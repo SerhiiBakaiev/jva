@@ -1,4 +1,4 @@
-package org.example;
+package graphic.core;
 
 public enum KeyBoardAction
 {
