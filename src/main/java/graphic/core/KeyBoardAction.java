@@ -3,8 +3,12 @@ package graphic.core;
 public enum KeyBoardAction
 {
     Unknown,
-    MoveUp,
-    MoveDown,
-    MoveLeft,
-    MoveRight,
+    MoveUpPressed,
+    MoveUpReleased,
+    MoveDownPressed,
+    MoveDownReleased,
+    MoveLeftPressed,
+    MoveLeftReleased,
+    MoveRightPressed,
+    MoveRightReleased,
 }
