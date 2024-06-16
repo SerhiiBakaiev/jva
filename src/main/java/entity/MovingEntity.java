@@ -1,61 +1,109 @@
 package entity;
 
 import controller.EntityController;
+import core.BoundingBox;
 import core.Direction;
 import core.Motion;
 import core.Position;
+import display.Camera;
 import entity.action.Action;
 import entity.effect.Effect;
 import game.state.State;
-import gfx.AnimationManager;
-import gfx.SpriteLibrary;
+import gfx.Animation;
+import gfx.Sprite;
+import gfx.SpriteSheet;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public abstract class MovingEntity extends  GameObject{
-    protected EntityController _controller;
-    protected Motion _motion;
-    protected AnimationManager _animationManager;
-    protected Direction _direction;
+    protected EntityController controller;
+    protected Motion motion;
     private  final List<Effect> _effects;
-    private Optional<Action> _action;
+    private Optional<Action> action;
+    protected Animation animation;
+    protected Direction direction;
+    protected SpriteSheet spriteSheet;
+    protected int currentAnimation = 0;
 
-    protected MovingEntity(EntityController controller, SpriteLibrary spriteLibrary) {
+    protected MovingEntity(EntityController controller, SpriteSheet spriteSheet, int size) {
+        super(size);
         _effects = new ArrayList<>();
-        _action = Optional.empty();
-        _controller = controller;
-        collisionBoxOffset = new Position(
-            collisionBoxSize.getWidth() / 2,
-            collisionBoxSize.getHeight() / 2
-        );
+        action = Optional.empty();
+        animation = new Animation();
+        direction = Direction.D;
+        this.spriteSheet = spriteSheet;
+        this.controller = controller;
+        var i = Direction.D.getAnimationRow();
+        setAnimation(i, this.spriteSheet.getSpriteArray(i), 10);
     }
 
     @Override
     public void update(State state) {
-
-        handleAction(state);
+        onBeginUpdate(state);
+        //handleAction(state);
+        motion.update(controller);
         handleMotion(state);
-        _animationManager.update(_direction);
-        applyEffects(state);
-
+        onAnimate(state);
+        animation.update(state);
         handleCollisions(state);
-        manageDirection();
-        decideAnimation();
-
-        _position.apply(_motion);
+        onUpdate(state);
+        applyEffects(state);
+        position = position.apply(motion);
         cleanup();
     }
 
-    @Override
-    public Image getSprite(){
-        return _animationManager.getSprite();
+    protected void onAnimate(State state) {
+        Direction newDirection = Direction.fromMotion(motion);
+        int currentAnimation = direction.getAnimationRow();
+        if(motion.IsMoving()) {
+            direction = newDirection;
+            int newRow = direction.getAnimationRow();
+            if(this.currentAnimation != newRow || animation.getDelay() == -1) {
+                setAnimation(currentAnimation, spriteSheet.getSpriteArray(currentAnimation), 5);
+            }
+            System.out.println("Moving " + direction);
+        }
+        else {
+            currentAnimation = direction.getAnimationRow();
+            setAnimation(currentAnimation, spriteSheet.getSpriteArray(currentAnimation), -1);
+            System.out.println("Idle " + direction);
+        }
+
+
     }
 
+    @Override
+    public BoundingBox getBoundingBox() {
+        Position positionWithMotion = position.copy()
+                .apply(motion);
+        return new BoundingBox(
+                positionWithMotion.getVector(),
+                size.getWidth(),
+                size.getHeight()
+        );
+    }
+
+    @Override
     public EntityController getController(){
-        return _controller;
+        return controller;
+    }
+
+    protected void onBeginUpdate(State state) {
+
+    }
+
+    protected void onUpdate(State state) {
+
+    }
+
+    protected void setAnimation(int i, Sprite[] frames, int delay){
+        currentAnimation = i;
+        animation.setFrames(i, frames);
+        animation.setDelay(delay);
     }
 
     public void addEffect(Effect effect) {
@@ -63,11 +111,21 @@ public abstract class MovingEntity extends  GameObject{
     }
 
     public void performAction(Action state) {
-        _action = Optional.of(state);
+        action = Optional.of(state);
+    }
+
+    @Override
+    public void render(State state, Graphics2D g){
+        Camera camera = state.getCamera();
+        int x = this.getRenderPosition(camera).getIntX();
+        int y = this.getRenderPosition(camera).getIntY();
+        Sprite sprite = animation.getSprite();
+        BufferedImage image = sprite.getImage();
+        g.drawImage(image, x, y, null);
     }
 
     public void multiplySpeed(int speedMultiplier) {
-        _motion.multiplySpeed(speedMultiplier);
+        motion.multiplySpeed(speedMultiplier);
     }
 
     private void handleCollisions(State state) {
@@ -76,31 +134,21 @@ public abstract class MovingEntity extends  GameObject{
     }
 
     protected abstract void handleCollision(IGameObject gameObject);
+
     private void handleAction(State state){
-        if(_action.isEmpty())
+        if(action.isEmpty())
             return;
 
-        _action.get().update(state, this);
+        action.get().update(state, this);
     }
 
-    private void manageDirection(){
-        if(_motion.IsMoving()) {
-            _direction = Direction.fromMotion(_motion);
-        }
-    }
 
-    private void decideAnimation() {
-        if(_action.isPresent()){
-            _animationManager.playAnimation(_action.get().getAnimationName());
+
+    protected void handleMotion(State state){
+        if(action.isEmpty()) {
+
         } else{
-          _animationManager.playAnimation("walking");
-        }
-    }
-    private void handleMotion(State state){
-        if(_action.isEmpty()) {
-            _motion.update(_controller);
-        } else{
-            _motion.stop();
+            motion.stop();
         }
     }
 
@@ -114,7 +162,7 @@ public abstract class MovingEntity extends  GameObject{
                 .filter(Effect::isActive)
                 .forEach(_effects::remove);
 
-        if(_action.isPresent() && _action.get().isDone())
-            _action = Optional.empty();
+        if(action.isPresent() && action.get().isDone())
+            action = Optional.empty();
     }
 }

@@ -1,7 +1,5 @@
 package map;
 
-import gfx.SpriteLibrary;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 

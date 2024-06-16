@@ -1,11 +1,9 @@
 package map;
 
-import gfx.SpriteLibrary;
-
-import java.awt.image.BufferedImage;
+import gfx.TileLibrary;
 
 public class MudTile extends Tile{
-    public MudTile(SpriteLibrary spriteLibrary) {
-        super(spriteLibrary.getTile("mud"));
+    public MudTile(TileLibrary tileLibrary) {
+        super(tileLibrary.getImage("mud"));
     }
 }

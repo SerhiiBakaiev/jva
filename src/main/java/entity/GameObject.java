@@ -4,46 +4,41 @@ import core.BoundingBox;
 import core.Position;
 import core.Size;
 import display.Camera;
+import gfx.Animation;
 
 public abstract class GameObject implements IGameObject {
 
-    protected Position _position;
-    protected Size _size;
-    protected Size collisionBoxSize;
-    protected GameObject _parent;
-    protected Position renderOffset;
-    protected Position collisionBoxOffset;
+    protected Position position;
+    protected Size size;
+    protected IGameObject parent;
 
-    protected GameObject()
-    {
-        _position = new Position(50,50);
-        _size = new Size(50,50);
-        collisionBoxSize = new Size(48,64);
-        collisionBoxOffset = new Position();
-        renderOffset = new Position();
+
+    protected GameObject(int size) {
+        position = new Position(0, 0);
+        this.size = new Size(size, size);
     }
 
-
-    public void setPosition(Position position){
-        _position = position;
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
     @Override
     public Position getPosition() {
-        Position pos = _position.copy();
-        if(_parent != null){
-            pos = pos.add(_parent.getPosition());
+        Position pos = position.copy();
+        if (parent != null) {
+            pos = pos.add(parent.getPosition());
         }
-        return  pos;
+        return pos;
     }
 
     @Override
-    public BoundingBox getBoundingBox(){
+    public  BoundingBox getBoundingBox(){
+        Position positionWithMotion = position.copy();
+
         return new BoundingBox(
-            _position.getIntX(),
-            _position.getIntY(),
-            collisionBoxSize.getWidth(),
-            collisionBoxSize.getHeight()
+                position.getVector(),
+                getSize().getHeight(),
+                getSize().getHeight()
         );
     }
 
@@ -53,20 +48,22 @@ public abstract class GameObject implements IGameObject {
     }
 
     @Override
-    public Position getRenderPosition(Camera camera){
+    public Position getRenderPosition(Camera camera) {
         Position currentPosition = getPosition();
         Position cameraPosition = camera.getPosition();
         return new Position(
-            currentPosition.getX() - cameraPosition.getX() - renderOffset.getX(),
-            currentPosition.getY() - cameraPosition.getY() - renderOffset.getY()
+                currentPosition.getX() - cameraPosition.getX(),
+                currentPosition.getY() - cameraPosition.getY()
         );
     }
+
     @Override
     public Size getSize() {
-        return _size;
+        return size;
     }
 
-    public void setParent(GameObject parent){
-        _parent = parent;
+    @Override
+    public void setParent(IGameObject parent) {
+        this.parent = parent;
     }
 }

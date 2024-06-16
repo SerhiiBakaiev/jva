@@ -1,15 +1,14 @@
 package core;
 
 public enum Direction {
-    D(0),
+    R(0),
     L(1),
-    R(2),
+    D(2),
     U(3);
-
-    private int _animationRow;
+    private final int animationRow;
 
     Direction(int row) {
-        _animationRow = row;
+        animationRow = row;
     }
 
     public  static Direction fromMotion(Motion motion){
@@ -28,6 +27,6 @@ public enum Direction {
     }
 
     public int getAnimationRow() {
-        return _animationRow;
+        return animationRow;
     }
 }

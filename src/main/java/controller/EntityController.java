@@ -1,8 +1,10 @@
 package controller;
 
-public interface EntityController {
+public interface EntityController extends Controller{
     boolean isRequestingUp();
     boolean isRequestingDown();
     boolean isRequestingRight();
     boolean isRequestingLeft();
+    boolean isRequestingSpace();
+    boolean isRequestingAction();
 }

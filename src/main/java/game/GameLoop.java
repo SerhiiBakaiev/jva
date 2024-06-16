@@ -12,6 +12,7 @@ public class GameLoop implements  Runnable{
     private  Game _game;
     public  GameLoop(Game game) {
         _game = game;
+        _game.update();
     }
 
     @Override

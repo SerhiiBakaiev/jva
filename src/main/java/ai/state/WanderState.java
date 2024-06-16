@@ -1,39 +1,49 @@
 package ai.state;
 
 import ai.AITransition;
-import controller.EnemyController;
+import controller.NPCController;
 import core.Position;
-import entity.Enemy;
+import entity.IGameObject;
 import entity.Player2;
 import game.state.State;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class WanderState extends  AIStateBase{
+public class WanderState extends AIStateBase {
+
+    private Position target;
+    private boolean isArrived;
 
     public WanderState() {
-        super();
     }
 
     @Override
     protected AITransition getTransition() {
-        return new AITransition("stand", ((state, character) -> isArrived(state.getPlayer(), character)));
+        return new AITransition("stand", ((state, character) -> isArrived));
     }
 
     @Override
-    public void update(State state, Enemy enemy) {
-        Player2 player = state.getPlayer();
-        EnemyController controller = (EnemyController)enemy.getController();
-        controller.moveToTarget(player.getPosition(), enemy.getPosition());
-        if(isArrived(state.getPlayer(), enemy)){
-            //controller.stop();
+    public void update(State state, IGameObject gameObject) {
+        if (!(gameObject.getController() instanceof NPCController npcController))
+            return;
+
+        if (target == null) {
+            target = state.getRandomPosition();
+        }
+
+        if (npcController.moveToTarget(target, gameObject.getPosition())) {
+            target = state.getRandomPosition();
+        }
+        Player2 player2 = state.getPlayer();
+        if (isArrivedTo(gameObject, player2)) {
+            isArrived = true;
+            npcController.stop();
         }
     }
 
-    private  boolean isArrived(Player2 player, Enemy enemy){
-        return false;
-        //return enemy.getPosition().isRangeOf(player.getPosition());
+    private boolean isArrivedTo(IGameObject first, IGameObject second) {
+        return first.collidesWith(second);
+        //return first.getPosition().isRangeOf(second.getPosition(), 10);
     }
-
 }

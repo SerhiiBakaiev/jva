@@ -2,37 +2,41 @@ package ai;
 
 import ai.state.AIState;
 import ai.state.StandState;
+import ai.state.MoveToPlayerState;
 import ai.state.WanderState;
-import entity.Enemy;
+import entity.IGameObject;
 import game.state.State;
 
 public class AIManager {
 
-    private AIState _curentState;
+    private AIState currentState;
 
     public AIManager() {
-        transitionTo("walking");
+        transitionTo("wander");
     }
 
-    public void update(State state, Enemy enemy) {
-        _curentState.update(state, enemy);
-        if(_curentState.shouldTransition(state, enemy)){
-            transitionTo(_curentState.getNextTransition());
+    public void update(State state, IGameObject enemy) {
+        currentState.update(state, enemy);
+        if(currentState.shouldTransition(state, enemy)){
+            transitionTo(currentState.getNextTransition());
         }
     }
 
     private void transitionTo(String nextTransition) {
         switch(nextTransition) {
             case "wander":
-                _curentState = new WanderState();
+                currentState = new WanderState();
+                break;
+            case "moveToPlayer":
+                currentState = new MoveToPlayerState();
                 break;
             default:
             case "stand":
-                _curentState = new StandState();
+                currentState = new StandState();
 
         }
 
-        _curentState.initialize();
+        currentState.initialize();
     }
 
 }

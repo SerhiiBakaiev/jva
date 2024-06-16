@@ -1,6 +1,7 @@
 package ai;
 
 import entity.Enemy;
+import entity.IGameObject;
 import game.state.State;
 
 public class AITransition {
@@ -12,7 +13,7 @@ public class AITransition {
         _condition = condition;
     }
 
-    public boolean shouldTransition(State state, Enemy enemy) {
+    public boolean shouldTransition(State state, IGameObject enemy) {
         return _condition.isMet(state,enemy);
     }
 

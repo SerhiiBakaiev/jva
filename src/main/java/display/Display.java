@@ -23,7 +23,7 @@ public class Display  extends JFrame {
     public Display(Size windowSize, Input input) {
         _debugRenderer = new DebugRenderer();
         _renderer = new Renderer(this);
-        _focus = new Focus(this);
+        _focus = new Focus(this, input);
         setTitle("My game");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);

@@ -1,28 +1,74 @@
 package entity;
 
 import controller.EntityController;
+import core.BoundingBox;
 import core.Direction;
 import core.Motion;
-import gfx.AnimationManager;
-import gfx.SpriteLibrary;
+import display.Camera;
+import game.Game;
+import game.state.State;
+import gfx.ImageUtils;
+import gfx.SpriteSheet;
 
-public class Player2 extends MovingEntity{
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.ArrayList;
+
+public class Player2 extends MovingEntity {
 
     private int _healthPoint = 100;
+    private String state = "walking";
+    protected int  attackSpeed = 1050; // in milliseconds
+    protected int attackDuration = 650; // in milliseconds
+    private BoundingBox hitBounding;
 
-    public Player2(EntityController controller, SpriteLibrary spriteLibrary){
-        super(controller, spriteLibrary);
-        _direction = Direction.D;
-        _motion = new Motion(4);
-        _animationManager = new AnimationManager(spriteLibrary.getSpriteSet("sprites/unit/character/main"));
-        _animationManager.playAnimation("walking");
+    public Player2(EntityController controller) throws IOException {
+        super(controller, new SpriteSheet("/sprites/player/wizardPlayer.png", 64, 64), 64);
+        motion = new Motion(4);
+        animation.setNumFrames(4, Direction.U.getAnimationRow());
+        animation.setNumFrames(4, Direction.D.getAnimationRow());
+        animation.setNumFrames(4, Direction.U.getAnimationRow() + 5);
+        animation.setNumFrames(4, Direction.R.getAnimationRow() + 5);
+        animation.setNumFrames(4, Direction.L.getAnimationRow() + 5);
+        animation.setNumFrames(4, Direction.D.getAnimationRow() + 5);
+
     }
 
-    public int getHealthPoint(){
+    public int getHealthPoint() {
         return _healthPoint;
+
     }
+
     @Override
     protected void handleCollision(IGameObject gameObject) {
 
+    }
+
+
+    @Override
+    protected void onUpdate(State state) {
+        super.onUpdate(state);
+    }
+
+
+    @Override
+    protected void onBeginUpdate(State state) {
+        super.onUpdate(state);
+    }
+
+    @Override
+    protected void onAnimate(State state) {
+
+        if(controller.isRequestingSpace()){
+            System.out.println("Spacing");
+            if(currentAnimation < 5){
+                var currentAnimation = this.currentAnimation + 5;
+                setAnimation(currentAnimation , spriteSheet.getSpriteArray(currentAnimation), attackDuration / 100 );
+                System.out.println("Attacking ");
+            }
+        }else{
+            super.onAnimate(state);
+        }
     }
 }

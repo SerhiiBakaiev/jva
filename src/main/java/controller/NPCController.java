@@ -3,7 +3,7 @@ package controller;
 import core.Position;
 import core.Vector2d;
 
-public class EnemyController implements EntityController {
+public class NPCController implements EntityController {
 
     private  boolean _up;
     private  boolean _right;
@@ -30,7 +30,17 @@ public class EnemyController implements EntityController {
         return _left;
     }
 
-    public void moveToTarget(Position target, Position current) {
+    @Override
+    public boolean isRequestingSpace() {
+        return false;
+    }
+
+    @Override
+    public boolean isRequestingAction() {
+        return false;
+    }
+
+    public boolean moveToTarget(Position target, Position current) {
         Vector2d targetVector = target.getVector();
         Vector2d currentVector = current.getVector();
         Vector2d diff = targetVector.diff(currentVector);
@@ -41,6 +51,11 @@ public class EnemyController implements EntityController {
         _right = deltaX > 0 && Math.abs(deltaX) > Position.PROXIMITY_RANGE;
         _down = deltaY > 0 && Math.abs(deltaY) > Position.PROXIMITY_RANGE;
         _left = deltaX < 0 && Math.abs(deltaX) > Position.PROXIMITY_RANGE;
+        if(!_up && !_down && !_left && !_right) {
+            int z =3;
+
+        }
+        return currentVector.distanceTo(targetVector) < Position.PROXIMITY_RANGE;
     }
 
     public void stop() {

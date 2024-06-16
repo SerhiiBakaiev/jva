@@ -19,15 +19,15 @@ public class Motion {
         {
             deltaY--;
         }
-        if(controller.isRequestingDown())
+        else if(controller.isRequestingDown())
         {
             deltaY++;
         }
-        if(controller.isRequestingLeft())
+        else if(controller.isRequestingLeft())
         {
             deltaX--;
         }
-        if(controller.isRequestingRight())
+        else if(controller.isRequestingRight())
         {
             deltaX++;
         }

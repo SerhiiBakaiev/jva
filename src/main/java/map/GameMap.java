@@ -4,8 +4,8 @@ import core.Position;
 import core.Size;
 import display.Camera;
 import game.Game;
-import gfx.ImageUtils;
-import gfx.SpriteLibrary;
+import gfx.ResourceProvider;
+import gfx.TileLibrary;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -16,12 +16,12 @@ public class GameMap {
     private final int _rows;
     private final Tile[][] _tiles;
 
-    public GameMap(Size size, SpriteLibrary spriteLibrary){
+    public GameMap(Size size){
         _cols = size.getHeight();
         _rows = size.getWidth();
         _tiles = new Tile[_cols][_rows];
         for(Tile[] row: _tiles){
-            Arrays.fill(row, new MudTile(spriteLibrary));
+            Arrays.fill(row, new MudTile(ResourceProvider.getInstance().getTileLibrary()));
         }
     }
 

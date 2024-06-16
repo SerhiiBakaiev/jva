@@ -24,7 +24,7 @@ public class Renderer implements IRenderer {
         Camera camera = state.getCamera();
         renderMap2(camera, state.getGameMap(), graphics);
         renderObjects(
-                camera,
+                state,
                 state.getGameObjects(),
                 graphics);
         renderUi(state.getUiContainers(), graphics);
@@ -65,21 +65,17 @@ public class Renderer implements IRenderer {
     }
 
     private  void renderObjects(
-            Camera camera,
+            State state,
             java.util.List<IGameObject> gameObjectList,
             Graphics graphics) {
-        Position cameraPosition = camera.getPosition();
+        Camera camera = state.getCamera();
         gameObjectList.stream()
                 .filter(camera::isInView)
                 .forEach(gameObject -> {
-                    Position position = gameObject.getPosition();
-                    Size objectSize = gameObject.getSize();
-                    graphics.drawImage(
-                            gameObject.getSprite(),
-                            gameObject.getRenderPosition(camera).getIntX(),
-                            gameObject.getRenderPosition(camera).getIntY(),
-                            null
-                    );
+                    Graphics2D graphics2D = (Graphics2D)graphics;
+                    int x = gameObject.getRenderPosition(camera).getIntX();
+                    int y = gameObject.getRenderPosition(camera).getIntY();
+                    gameObject.render(state, graphics2D);
                 });
     }
 }

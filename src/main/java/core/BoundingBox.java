@@ -3,27 +3,41 @@ package core;
 import java.awt.*;
 
 public class BoundingBox {
-    private final Rectangle _bounds;
-
+    private final Rectangle bounds;
+    private int size;
     public BoundingBox(Rectangle rectangle){
-        _bounds = rectangle;
+        bounds = rectangle;
     }
-    public BoundingBox(int x, int y, int width, int height) {
-        _bounds = new Rectangle(x, y, width, height);
+    public BoundingBox(Vector2d orig, int width, int height) {
+        bounds = new Rectangle((int)orig.getX(), (int)orig.getY(), width, height);
+        size = Math.max(width, height);
+    }
+    public BoundingBox(Vector2d orig, int r) {
+        bounds = new Rectangle((int)orig.getX(), (int)orig.getY(), r, r);
     }
 
     public boolean collidesWith(BoundingBox other) {
-        return _bounds.intersects(other._bounds);
+        return bounds.intersects(other.bounds);
     }
 
     public Rectangle getBounds(){
-        return _bounds;
+        return bounds;
     }
 
-    public  static  BoundingBox of(Position position, Size size){
+    public double getWidth(){
+        return bounds.getWidth();
+    }
+
+    public double getHeight(){
+        return bounds.getHeight();
+    }
+
+    public static BoundingBox empty(){
+        return new BoundingBox(Vector2d.Zero, 0, 0);
+    }
+    public  static  BoundingBox of(Vector2d vector2d, Size size){
         return new BoundingBox(
-                position.getIntX(),
-                position.getIntY(),
+                vector2d,
                 size.getWidth(),
                 size.getHeight()
         );

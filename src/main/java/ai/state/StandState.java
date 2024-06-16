@@ -1,22 +1,41 @@
 package ai.state;
 
 import ai.AITransition;
-import entity.Enemy;
+import controller.NPCController;
+import core.Position;
+import entity.IGameObject;
+import entity.Player2;
 import game.state.State;
 
-public class StandState extends AIStateBase {
-    private int _updates = 0;
+import java.util.ArrayList;
+import java.util.List;
 
-    @Override
-    protected AITransition getTransition() {
-        return new AITransition("wander",((state, curentCharacter) ->
-        {
-            return _updates >= state.getTime().getUpdatesFromSecond(1);
-        }));
+public class StandState extends AIStateBase {
+
+    private boolean isLeaved;
+
+    public StandState() {
+
     }
 
     @Override
-    public void update(State state, Enemy enemy) {
-        _updates++;
+    protected AITransition getTransition() {
+        return new AITransition("wander",((state, character) -> isLeaved));
+    }
+
+    @Override
+    public void update(State state, IGameObject gameObject) {
+        if(!(gameObject.getController() instanceof NPCController npcController))
+            return;
+
+        Player2 player2 = state.getPlayer();
+        if(isLeavedFrom(player2, gameObject)){
+            isLeaved = true;
+        }
+    }
+
+    private boolean isLeavedFrom(IGameObject first, IGameObject second) {
+        return !first.collidesWith(second);
+        //return !first.getPosition().isRangeOf(second.getPosition(), 10);
     }
 }

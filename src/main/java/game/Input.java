@@ -2,6 +2,8 @@ package game;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
 public class Input implements KeyListener {
 
@@ -13,6 +15,10 @@ public class Input implements KeyListener {
 
     }
 
+    public  void clear(){
+        Arrays.fill(_pressed, false);
+        Arrays.fill(_curentlyPressed, false);
+    }
     public boolean isPressed(int keyCode){
         if(!_pressed[keyCode] && _curentlyPressed[keyCode]) {
             _pressed[keyCode] = true;
