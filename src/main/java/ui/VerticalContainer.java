@@ -1,7 +1,7 @@
 package ui;
 
-import core.Position;
 import core.Size;
+import core.Vector2d;
 
 public class VerticalContainer extends  UIContainer{
 
@@ -31,7 +31,7 @@ public class VerticalContainer extends  UIContainer{
 
         for(UIComponent uiComponent : _children) {
             currentY += uiComponent.getMargin().getTop();
-            uiComponent.setPosition(new Position(_padding.getLeft(), currentY));
+            uiComponent.setPosition(Vector2d.of(_padding.getLeft(), currentY));
             currentY += uiComponent.getSize().getHeight();
             currentY += uiComponent.getMargin().getBottom();
         }

@@ -3,14 +3,14 @@ package entity.npc;
 import ai.AIManager;
 import controller.EntityController;
 import core.Motion;
-import entity.MovingEntity;
+import core.Vector2d;
+import entity.Entity;
 import game.state.State;
-import gfx.TileLibrary;
 
-public abstract class Npc extends MovingEntity {
+public abstract class Npc extends Entity {
     protected AIManager aiManager;
-    protected Npc(EntityController controller) {
-        super(controller, null, 64);
+    protected Npc(EntityController controller, Vector2d origin) {
+        super(controller, null, 64, origin);
         aiManager = new AIManager();
         motion = new Motion(1);
     }

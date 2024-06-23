@@ -1,7 +1,7 @@
 package ui;
 
-import core.Position;
 import core.Size;
+import core.Vector2d;
 
 public class HorizontalContainer extends  UIContainer{
 
@@ -31,7 +31,7 @@ public class HorizontalContainer extends  UIContainer{
 
         for(UIComponent uiComponent : _children) {
             currentX += uiComponent.getMargin().getLeft();
-            uiComponent.setPosition(new Position(currentX, _padding.getTop()));
+            uiComponent.setPosition(Vector2d.of(currentX, _padding.getTop()));
             currentX += uiComponent.getSize().getWidth();
             currentX += uiComponent.getMargin().getRight();
         }

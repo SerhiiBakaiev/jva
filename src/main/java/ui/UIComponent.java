@@ -1,21 +1,21 @@
 package ui;
 
-import core.Position;
 import core.Size;
+import core.Vector2d;
 import game.state.State;
 
 import java.awt.*;
 
 public abstract class UIComponent {
 
-    protected Position _position;
+    protected Vector2d _position;
     protected Size _size;
     protected Spacing _margin;
     protected Spacing _padding;
 
 
     public UIComponent(){
-        _position = new Position(0,0);
+        _position = Vector2d.Zero;
         _size = new Size(1,1);
         _margin = new Spacing(0);
         _padding = new Spacing(0);
@@ -24,11 +24,11 @@ public abstract class UIComponent {
 
     public abstract Image getSprite();
     public abstract void update(State state);
-    public Position getPosition() {
+    public Vector2d getPosition() {
         return _position;
     }
 
-    public void setPosition(Position position) {
+    public void setPosition(Vector2d position) {
         _position = position;
     }
 

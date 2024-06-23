@@ -1,7 +1,7 @@
 package display;
 
 import core.BoundingBox;
-import core.Position;
+import core.Vector2d;
 import entity.IGameObject;
 import game.state.State;
 
@@ -17,7 +17,7 @@ public class DebugRenderer implements IRenderer{
             Camera camera,
             java.util.List<IGameObject> gameObjectList,
             Graphics graphics) {
-        Position cameraPosition = camera.getPosition();
+        Vector2d cameraPosition = camera.getPosition();
         gameObjectList.stream()
                 .filter(camera::isInView)
                 .map(IGameObject::getBoundingBox)
@@ -27,10 +27,10 @@ public class DebugRenderer implements IRenderer{
     private void drawBoundingBox(BoundingBox boundingBox, Graphics graphics, Camera camera) {
         graphics.setColor(Color.RED);
         Rectangle bounds = boundingBox.getBounds();
-        Position cameraPosition = camera.getPosition();
+        Vector2d cameraPosition = camera.getPosition();
         graphics.drawRect(
-                (int)bounds.getX() - cameraPosition.getIntX(),
-                (int)bounds.getY() - cameraPosition.getIntY(),
+                (int)(bounds.getX() - cameraPosition.getX()),
+                (int)(bounds.getY() - cameraPosition.getY()),
                 (int)bounds.getWidth(),
                 (int)bounds.getHeight()
         );

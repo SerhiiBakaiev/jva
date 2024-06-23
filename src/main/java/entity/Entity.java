@@ -4,7 +4,7 @@ import controller.EntityController;
 import core.BoundingBox;
 import core.Direction;
 import core.Motion;
-import core.Position;
+import core.Vector2d;
 import display.Camera;
 import entity.action.Action;
 import entity.effect.Effect;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class MovingEntity extends  GameObject{
+public abstract class Entity extends  GameObject{
     protected EntityController controller;
     protected Motion motion;
     private  final List<Effect> _effects;
@@ -29,8 +29,14 @@ public abstract class MovingEntity extends  GameObject{
     protected SpriteSheet spriteSheet;
     protected int currentAnimation = 0;
 
-    protected MovingEntity(EntityController controller, SpriteSheet spriteSheet, int size) {
-        super(size);
+    protected Entity(
+            EntityController controller,
+            SpriteSheet spriteSheet,
+            int size,
+            Vector2d origin
+    )
+    {
+        super(size, origin);
         _effects = new ArrayList<>();
         action = Optional.empty();
         animation = new Animation();
@@ -44,7 +50,6 @@ public abstract class MovingEntity extends  GameObject{
     @Override
     public void update(State state) {
         onBeginUpdate(state);
-        //handleAction(state);
         motion.update(controller);
         handleMotion(state);
         onAnimate(state);
@@ -52,7 +57,7 @@ public abstract class MovingEntity extends  GameObject{
         handleCollisions(state);
         onUpdate(state);
         applyEffects(state);
-        position = position.apply(motion);
+        origin = motion.applyTo(origin);
         cleanup();
     }
 
@@ -78,10 +83,9 @@ public abstract class MovingEntity extends  GameObject{
 
     @Override
     public BoundingBox getBoundingBox() {
-        Position positionWithMotion = position.copy()
-                .apply(motion);
+        var positionWithMotion = motion.applyTo(origin);
         return new BoundingBox(
-                positionWithMotion.getVector(),
+                positionWithMotion,
                 size.getWidth(),
                 size.getHeight()
         );
@@ -117,8 +121,8 @@ public abstract class MovingEntity extends  GameObject{
     @Override
     public void render(State state, Graphics2D g){
         Camera camera = state.getCamera();
-        int x = this.getRenderPosition(camera).getIntX();
-        int y = this.getRenderPosition(camera).getIntY();
+        int x = (int)this.getRenderPosition(camera).getX();
+        int y = (int)this.getRenderPosition(camera).getY();
         Sprite sprite = animation.getSprite();
         BufferedImage image = sprite.getImage();
         g.drawImage(image, x, y, null);

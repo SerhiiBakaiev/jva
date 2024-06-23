@@ -1,7 +1,7 @@
 package ui;
 
-import core.Position;
 import core.Size;
+import core.Vector2d;
 import game.state.State;
 import gfx.ImageUtils;
 
@@ -59,7 +59,7 @@ public abstract class UIContainer extends UIComponent {
             y = _windowSize.getHeight() - _size.getHeight() - _margin.getBottom();
         }
 
-        this._position = new Position(x, y);
+        this._position = Vector2d.of(x, y);
         calculateContentPosition();
     }
 
@@ -74,8 +74,8 @@ public abstract class UIContainer extends UIComponent {
         for(UIComponent uiComponent : _children) {
             graphics.drawImage(
                     uiComponent.getSprite(),
-                    uiComponent.getPosition().getIntX(),
-                    uiComponent.getPosition().getIntY(),
+                    (int)uiComponent.getPosition().getX(),
+                    (int)uiComponent.getPosition().getY(),
                     null
             );
         }

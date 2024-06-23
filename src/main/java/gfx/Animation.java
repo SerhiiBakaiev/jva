@@ -61,6 +61,9 @@ public class Animation {
     }
 
     public int getDelay() { return delay; }
+    public boolean isDelayUnset(){
+        return delay == -1;
+    }
     public int getFrame() { return currentFrame; }
     public int getCount() { return count; }
     public Sprite getSprite() { return frames[currentFrame]; }

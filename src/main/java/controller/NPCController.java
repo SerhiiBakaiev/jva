@@ -1,6 +1,5 @@
 package controller;
 
-import core.Position;
 import core.Vector2d;
 
 public class NPCController implements EntityController {
@@ -36,26 +35,24 @@ public class NPCController implements EntityController {
     }
 
     @Override
-    public boolean isRequestingAction() {
+    public boolean isAttacking() {
         return false;
     }
 
-    public boolean moveToTarget(Position target, Position current) {
-        Vector2d targetVector = target.getVector();
-        Vector2d currentVector = current.getVector();
+    public boolean moveToTarget(Vector2d targetVector, Vector2d currentVector) {
         Vector2d diff = targetVector.diff(currentVector);
         double deltaX = diff.getX();
         double deltaY = diff.getY();
 
-        _up = deltaY < 0 && Math.abs(deltaY) > Position.PROXIMITY_RANGE;
-        _right = deltaX > 0 && Math.abs(deltaX) > Position.PROXIMITY_RANGE;
-        _down = deltaY > 0 && Math.abs(deltaY) > Position.PROXIMITY_RANGE;
-        _left = deltaX < 0 && Math.abs(deltaX) > Position.PROXIMITY_RANGE;
+        _up = deltaY < 0 && Math.abs(deltaY) > Vector2d.PROXIMITY_RANGE;
+        _right = deltaX > 0 && Math.abs(deltaX) > Vector2d.PROXIMITY_RANGE;
+        _down = deltaY > 0 && Math.abs(deltaY) > Vector2d.PROXIMITY_RANGE;
+        _left = deltaX < 0 && Math.abs(deltaX) > Vector2d.PROXIMITY_RANGE;
         if(!_up && !_down && !_left && !_right) {
             int z =3;
 
         }
-        return currentVector.distanceTo(targetVector) < Position.PROXIMITY_RANGE;
+        return currentVector.distanceTo(targetVector) < Vector2d.PROXIMITY_RANGE;
     }
 
     public void stop() {

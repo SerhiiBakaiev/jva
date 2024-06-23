@@ -2,17 +2,14 @@ package ai.state;
 
 import ai.AITransition;
 import controller.NPCController;
-import core.Position;
+import core.Vector2d;
 import entity.IGameObject;
 import entity.Player2;
 import game.state.State;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class WanderState extends AIStateBase {
 
-    private Position target;
+    private Vector2d target;
     private boolean isArrived;
 
     public WanderState() {
@@ -32,7 +29,7 @@ public class WanderState extends AIStateBase {
             target = state.getRandomPosition();
         }
 
-        if (npcController.moveToTarget(target, gameObject.getPosition())) {
+        if (npcController.moveToTarget(target, gameObject.getOrigin())) {
             target = state.getRandomPosition();
         }
         Player2 player2 = state.getPlayer();

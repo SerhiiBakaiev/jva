@@ -5,6 +5,7 @@ public class Vector2d {
     private final double y;
 
     public static Vector2d Zero = new Vector2d();
+    public static int PROXIMITY_RANGE = 5;
 
     public Vector2d(){
         x = 0;
@@ -43,6 +44,7 @@ public class Vector2d {
     public double distanceTo(Vector2d other) {
         return Math.sqrt((x - other.x) * (x - other.x) + (y - other.y) * (y - other.y) );
     }
+
     public boolean isEqual(Vector2d other, double tolerance) {
         return Math.abs(x - other.x) < tolerance && Math.abs(y - other.y) < tolerance;
     }
@@ -53,5 +55,12 @@ public class Vector2d {
 
     public Vector2d subtract(Vector2d vector) {
         return new Vector2d(x - vector.x, y - vector.y);
+    }
+
+    public Vector2d divide(double d) {
+        return new Vector2d(x / d, y / d);
+    }
+    public  static Vector2d of(double x, double y) {
+        return new Vector2d(x, y);
     }
 }

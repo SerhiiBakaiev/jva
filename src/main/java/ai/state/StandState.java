@@ -2,13 +2,9 @@ package ai.state;
 
 import ai.AITransition;
 import controller.NPCController;
-import core.Position;
 import entity.IGameObject;
 import entity.Player2;
 import game.state.State;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class StandState extends AIStateBase {
 

@@ -21,7 +21,7 @@ public class MoveToPlayerState extends  AIStateBase{
     public void update(State state, IGameObject enemy) {
         Player2 player = state.getPlayer();
         NPCController controller = (NPCController)enemy.getController();
-        controller.moveToTarget(player.getPosition(), enemy.getPosition());
+        controller.moveToTarget(player.getOrigin(), enemy.getOrigin());
         if(isArrived(state.getPlayer(), enemy)){
             //controller.stop();
         }

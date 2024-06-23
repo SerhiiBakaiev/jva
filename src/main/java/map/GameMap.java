@@ -1,11 +1,10 @@
 package map;
 
-import core.Position;
 import core.Size;
+import core.Vector2d;
 import display.Camera;
 import game.Game;
 import gfx.ResourceProvider;
-import gfx.TileLibrary;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -32,14 +31,12 @@ public class GameMap {
 
     }
 
-    public Position getViewStartPosition(Camera camera){
-        return  new Position(
-            camera.getPosition().getX()  / Game.SPRITE_SIZE,
-            camera.getPosition().getY()  / Game.SPRITE_SIZE
-        );
+    public Vector2d getViewStartPosition(Camera camera){
+
+        return camera.getPosition().divide(Game.SPRITE_SIZE);
     }
-    public Position getViewEndPosition(Camera camera){
-        return  new Position(
+    public Vector2d getViewEndPosition(Camera camera){
+        return  Vector2d.of(
                 camera.getPosition().getX()  / Game.SPRITE_SIZE + (double) camera.getSize().getWidth() / Game.SPRITE_SIZE,
                 camera.getPosition().getY()  / Game.SPRITE_SIZE + (double) camera.getSize().getHeight() / Game.SPRITE_SIZE
         );
@@ -52,9 +49,9 @@ public class GameMap {
         return _rows * Game.SPRITE_SIZE;
     }
 
-    public Position getRandomPosition() {
-        double x = Math.random() *getWidth();
+    public Vector2d getRandomPosition() {
+        double x = Math.random() * getWidth();
         double y = Math.random() * getHeight();
-        return  new Position(x, y);
+        return Vector2d.of(x, y);
     }
 }

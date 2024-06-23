@@ -30,8 +30,7 @@ public class GameState extends  State{
 
     private void intializeNpc(int count) {
         for (int i = 0; i < count; i++){
-            OldMan oldMan = new OldMan(new NPCController());
-            oldMan.setPosition(getRandomPosition());
+            OldMan oldMan = new OldMan(new NPCController(), getRandomPosition());
             gameObjects.add(oldMan);
         }
     }
@@ -44,8 +43,7 @@ public class GameState extends  State{
     }
     private  void initializeEnemy(int enemyCount){
         for (int i = 0; i < enemyCount; i++){
-            Enemy enemy = new Enemy(new NPCController());
-            enemy.setPosition(getRandomPosition());
+            Enemy enemy = new Enemy(new NPCController(), getRandomPosition());
             gameObjects.add(enemy);
         }
     }

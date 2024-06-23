@@ -1,6 +1,6 @@
 package entity.effect;
 
-import entity.MovingEntity;
+import entity.Entity;
 import game.GameLoop;
 import game.state.State;
 
@@ -13,9 +13,9 @@ public class SpeedBoostEffect extends Effect {
     }
 
     @Override
-    public void update(State state, MovingEntity movingEntity){
-          super.update(state, movingEntity);
-          movingEntity.multiplySpeed(_speedMultiplier);
+    public void update(State state, Entity entity){
+          super.update(state, entity);
+          entity.multiplySpeed(_speedMultiplier);
     }
 
 

@@ -1,6 +1,6 @@
 package entity.effect;
 
-import entity.MovingEntity;
+import entity.Entity;
 import game.state.State;
 
 public abstract class Effect {
@@ -10,7 +10,7 @@ public abstract class Effect {
         _lifeSpanInUpdates = lifeSpanInUpdates;
     }
 
-    public  void update(State state, MovingEntity movingEntity) {
+    public  void update(State state, Entity entity) {
         _lifeSpanInUpdates--;
     }
 

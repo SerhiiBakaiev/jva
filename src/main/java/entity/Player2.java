@@ -4,18 +4,13 @@ import controller.EntityController;
 import core.BoundingBox;
 import core.Direction;
 import core.Motion;
-import display.Camera;
-import game.Game;
+import core.Vector2d;
 import game.state.State;
-import gfx.ImageUtils;
 import gfx.SpriteSheet;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 
-public class Player2 extends MovingEntity {
+public class Player2 extends Entity {
 
     private int _healthPoint = 100;
     private String state = "walking";
@@ -24,7 +19,12 @@ public class Player2 extends MovingEntity {
     private BoundingBox hitBounding;
 
     public Player2(EntityController controller) throws IOException {
-        super(controller, new SpriteSheet("/sprites/player/wizardPlayer.png", 64, 64), 64);
+        super(controller,
+                new SpriteSheet("/sprites/player/wizardPlayer.png", 64, 64),
+                64,
+                Vector2d.Zero
+        );
+
         motion = new Motion(4);
         animation.setNumFrames(4, Direction.U.getAnimationRow());
         animation.setNumFrames(4, Direction.D.getAnimationRow());
@@ -63,7 +63,7 @@ public class Player2 extends MovingEntity {
         if(controller.isRequestingSpace()){
             System.out.println("Spacing");
             if(currentAnimation < 5){
-                var currentAnimation = this.currentAnimation + 5;
+                int currentAnimation = this.currentAnimation + 5;
                 setAnimation(currentAnimation , spriteSheet.getSpriteArray(currentAnimation), attackDuration / 100 );
                 System.out.println("Attacking ");
             }

@@ -2,19 +2,18 @@ package entity;
 
 import ai.AIManager;
 import controller.EntityController;
-import core.Direction;
 import core.Motion;
+import core.Vector2d;
 import game.state.State;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
-public class Enemy extends MovingEntity{
+public class Enemy extends Entity {
 
     private final AIManager aiManager;
 
-    public Enemy(EntityController controller) {
-        super(controller, null, 64);
+    public Enemy(EntityController controller, Vector2d origin) {
+        super(controller, null, 64, origin);
         motion = new Motion(2);
         aiManager = new AIManager();
     }

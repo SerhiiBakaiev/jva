@@ -6,5 +6,5 @@ public interface EntityController extends Controller{
     boolean isRequestingRight();
     boolean isRequestingLeft();
     boolean isRequestingSpace();
-    boolean isRequestingAction();
+    boolean isAttacking();
 }

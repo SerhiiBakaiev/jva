@@ -1,6 +1,6 @@
 package entity.action;
 
-import entity.MovingEntity;
+import entity.Entity;
 import game.GameLoop;
 import game.state.State;
 
@@ -12,7 +12,7 @@ public class Attack extends  Action{
         duration = GameLoop.UPDATES_PER_SECONDS;
     }
     @Override
-    public void update(State state, MovingEntity entity) {
+    public void update(State state, Entity entity) {
         duration--;
     }
 

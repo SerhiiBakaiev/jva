@@ -3,12 +3,12 @@ package core;
 import controller.EntityController;
 
 public class Motion {
-    private  Vector2d _vector;
+    private  Vector2d movementVector;
     private  double _speed;
 
     public Motion(double speed) {
         _speed = speed;
-        _vector = new Vector2d(0,0);
+        movementVector = new Vector2d(0,0);
     }
 
     public void update(EntityController controller) {
@@ -32,7 +32,7 @@ public class Motion {
             deltaX++;
         }
 
-        _vector = new Vector2d(deltaX,deltaY)
+        movementVector = new Vector2d(deltaX,deltaY)
                 .normalize()
                 .multiply(_speed);
     }
@@ -45,14 +45,18 @@ public class Motion {
         _speed = _speed * multiplier;
     }
     public Vector2d getVector() {
-        return _vector;
+        return movementVector;
+    }
+
+    public Vector2d applyTo(Vector2d vector) {
+        return vector.add(movementVector);
     }
 
     public boolean IsMoving() {
-        return _vector.length() > 0;
+        return movementVector.length() > 0;
     }
 
     public void stop() {
-        _vector = Vector2d.Zero;
+        movementVector = Vector2d.Zero;
     }
 }

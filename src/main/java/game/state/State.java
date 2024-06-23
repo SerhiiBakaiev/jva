@@ -1,14 +1,13 @@
 package game.state;
 
 import controller.PlayerController;
-import core.Position;
 import core.Size;
+import core.Vector2d;
 import display.Camera;
 import entity.IGameObject;
 import entity.Player2;
 import game.Input;
 import game.Time;
-import gfx.TileLibrary;
 import map.GameMap;
 import ui.UIContainer;
 
@@ -59,7 +58,7 @@ public  abstract  class State {
         return _player;
     }
 
-    public Position getRandomPosition() {
+    public Vector2d getRandomPosition() {
         return  _gameMap.getRandomPosition();
     }
 
@@ -74,7 +73,7 @@ public  abstract  class State {
     }
 
     private void sortObjectByPosition(){
-        gameObjects.sort(Comparator.comparing(gameObject -> gameObject.getPosition().getY()));
+        gameObjects.sort(Comparator.comparing(gameObject -> gameObject.getOrigin().getY()));
     }
 
     public List<IGameObject> getCollidingGameObject(IGameObject gameObject) {

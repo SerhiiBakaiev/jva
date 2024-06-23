@@ -1,42 +1,34 @@
 package entity;
 
 import core.BoundingBox;
-import core.Position;
 import core.Size;
+import core.Vector2d;
 import display.Camera;
-import gfx.Animation;
 
 public abstract class GameObject implements IGameObject {
 
-    protected Position position;
+    protected Vector2d origin;
     protected Size size;
     protected IGameObject parent;
 
 
-    protected GameObject(int size) {
-        position = new Position(0, 0);
+    protected GameObject(int size,  Vector2d origin) {
+        this.origin = origin;
         this.size = new Size(size, size);
     }
-
-    public void setPosition(Position position) {
-        this.position = position;
+    protected GameObject(int size) {
+        this(size, Vector2d.Zero);
     }
 
     @Override
-    public Position getPosition() {
-        Position pos = position.copy();
-        if (parent != null) {
-            pos = pos.add(parent.getPosition());
-        }
-        return pos;
+    public Vector2d getOrigin() {
+        return origin;
     }
 
     @Override
     public  BoundingBox getBoundingBox(){
-        Position positionWithMotion = position.copy();
-
         return new BoundingBox(
-                position.getVector(),
+                origin,
                 getSize().getHeight(),
                 getSize().getHeight()
         );
@@ -48,13 +40,10 @@ public abstract class GameObject implements IGameObject {
     }
 
     @Override
-    public Position getRenderPosition(Camera camera) {
-        Position currentPosition = getPosition();
-        Position cameraPosition = camera.getPosition();
-        return new Position(
-                currentPosition.getX() - cameraPosition.getX(),
-                currentPosition.getY() - cameraPosition.getY()
-        );
+    public Vector2d getRenderPosition(Camera camera) {
+        Vector2d currentPosition = getOrigin();
+        Vector2d cameraPosition = camera.getPosition();
+        return currentPosition.subtract(cameraPosition);
     }
 
     @Override
