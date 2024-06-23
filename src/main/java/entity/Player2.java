@@ -10,7 +10,7 @@ import gfx.SpriteSheet;
 
 import java.io.IOException;
 
-public class Player2 extends Entity {
+public class Player2 extends AttackingEntity {
 
     private int _healthPoint = 100;
     private String state = "walking";

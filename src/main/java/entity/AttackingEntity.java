@@ -2,11 +2,12 @@ package entity;
 
 import controller.EntityController;
 import core.BoundingBox;
+import core.Direction;
 import core.Vector2d;
 import game.state.State;
 import gfx.SpriteSheet;
 
-public class AttackingEntity extends Entity
+public abstract class AttackingEntity extends Entity
 {
     private int _healthPoint = 100;
     protected boolean isAttacking = false;
@@ -18,27 +19,25 @@ public class AttackingEntity extends Entity
     }
 
     @Override
-    protected void handleCollision(IGameObject gameObject) {
-
-    }
-
-    @Override
     protected void onAnimate(State state) {
+        Direction newDirection = Direction.fromMotion(motion);
+        int currentAnimation = direction.getAnimationRow();
         if(isAttacking) {
-            if(currentAnimation < 5){
-                int currentAnimation = this.currentAnimation + 5;
+            if(this.currentAnimation < 5){
+                currentAnimation = this.currentAnimation + 5;
                 setAnimation(currentAnimation , spriteSheet.getSpriteArray(currentAnimation), attackDuration / 100 );
             }
         }
         else if(motion.IsMoving()) {
-            int currentAnimation = direction.getAnimationRow();
+            direction = newDirection;
+            currentAnimation = direction.getAnimationRow();
             if(this.currentAnimation != currentAnimation || animation.isDelayUnset()) {
                 setAnimation(currentAnimation,spriteSheet.getSpriteArray(currentAnimation), 5 );
             }
         }
         else {
             if(!isAttacking && currentAnimation > 4) {
-                int currentAnimation = this.currentAnimation - 5;
+                currentAnimation = this.currentAnimation - 5;
                 setAnimation(currentAnimation , spriteSheet.getSpriteArray(currentAnimation), -1 );
             }
             else if(!isAttacking) {
