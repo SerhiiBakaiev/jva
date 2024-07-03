@@ -45,10 +45,7 @@ public class Animation {
 
     public void update(State gs) {
         if(delay == -1) return;
-
         count++;
-
-        System.out.println("Current frame: " + currentFrame);
         if(count == delay) {
             currentFrame++;
             count = 0;

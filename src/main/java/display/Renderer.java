@@ -45,7 +45,7 @@ public class Renderer implements IRenderer {
 
         // Рассчитаем начало и конец области отрисовки
         int startX = (int)cameraPosition.getX() / Game.SPRITE_SIZE - 1;
-        int startY = (int)cameraPosition.getX() / Game.SPRITE_SIZE - 1;
+        int startY = (int)cameraPosition.getY() / Game.SPRITE_SIZE - 1;
         int endX = (int)(cameraPosition.getX() + _display.getHeight()) / Game.SPRITE_SIZE + 1;
         int endY = (int)(cameraPosition.getY() + _display.getWidth()) / Game.SPRITE_SIZE+ 1;
         for (int x = startX; x <= endX; x++) {

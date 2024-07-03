@@ -10,7 +10,8 @@ import gfx.SpriteSheet;
 public abstract class AttackingEntity extends Entity
 {
     private int _healthPoint = 100;
-    protected boolean isAttacking = false;
+    protected boolean canAttack = false;
+    protected double attacktime;
     protected int  attackSpeed = 1050; // in milliseconds
     protected int attackDuration = 650; // in millisecond
     protected BoundingBox hitBounds;
@@ -21,8 +22,8 @@ public abstract class AttackingEntity extends Entity
     @Override
     protected void onAnimate(State state) {
         Direction newDirection = Direction.fromMotion(motion);
-        int currentAnimation = direction.getAnimationRow();
-        if(isAttacking) {
+        int currentAnimation = getAnimationRow(newDirection);
+        if(canAttack) {
             if(this.currentAnimation < 5){
                 currentAnimation = this.currentAnimation + 5;
                 setAnimation(currentAnimation , spriteSheet.getSpriteArray(currentAnimation), attackDuration / 100 );
@@ -30,17 +31,17 @@ public abstract class AttackingEntity extends Entity
         }
         else if(motion.IsMoving()) {
             direction = newDirection;
-            currentAnimation = direction.getAnimationRow();
+            currentAnimation = getAnimationRow(direction);
             if(this.currentAnimation != currentAnimation || animation.isDelayUnset()) {
                 setAnimation(currentAnimation,spriteSheet.getSpriteArray(currentAnimation), 5 );
             }
         }
         else {
-            if(!isAttacking && currentAnimation > 4) {
+            if(!canAttack && currentAnimation > 4) {
                 currentAnimation = this.currentAnimation - 5;
                 setAnimation(currentAnimation , spriteSheet.getSpriteArray(currentAnimation), -1 );
             }
-            else if(!isAttacking) {
+            else if(!canAttack) {
                 setAnimation(currentAnimation, spriteSheet.getSpriteArray(currentAnimation), -1);
             }
         }
@@ -49,7 +50,21 @@ public abstract class AttackingEntity extends Entity
     @Override
     protected void onBeginUpdate(State state) {
         super.onBeginUpdate(state);
-        isAttacking = controller.isAttacking();
+        canAttack = controller.isAttacking();
     }
 
+    protected boolean isAttacking(double time) {
+
+        if((attacktime / 1000000) > ((time / 1000000) - attackSpeed)) {
+            canAttack = false;
+        } else {
+            canAttack = true;
+        }
+
+        if((attacktime / 1000000) + attackDuration > (time / 1000000)) {
+            return true;
+        }
+
+        return false;
+    }
 }

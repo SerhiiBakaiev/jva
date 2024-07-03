@@ -39,6 +39,6 @@ public class PlayerController implements EntityController {
 
     @Override
     public boolean isAttacking() {
-        return _input.isPressed(KeyEvent.VK_E);
+        return _input.isPressed(KeyEvent.VK_SPACE);
     }
 }

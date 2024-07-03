@@ -1,27 +1,31 @@
 package entity;
 
-import ai.AIManager;
-import controller.EntityController;
+import controller.NPCController;
 import core.Motion;
 import core.Vector2d;
 import game.state.State;
+import gfx.SpriteSheet;
 
 import java.awt.*;
 
-public class Enemy extends Entity {
+public abstract class Enemy extends AttackingEntity {
 
-    private final AIManager aiManager;
+    private final NPCController npcController;
 
-    public Enemy(EntityController controller, Vector2d origin) {
-        super(controller, null, 64, origin);
+    public Enemy(NPCController controller, SpriteSheet spriteSheet, Vector2d origin) {
+        super(controller, spriteSheet, 64, origin);
+        this.npcController = controller;
         motion = new Motion(2);
-        aiManager = new AIManager();
     }
 
     @Override
     public void update(State state) {
         super.update(state);
-        aiManager.update(state, this);
+        Player2 player = state.getPlayer();
+        npcController.moveToTarget(
+            player.getOrigin(),
+            origin
+        );
     }
 
 

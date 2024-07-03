@@ -20,11 +20,18 @@ public class SpriteSheet {
     public static Font currentFont;
 
     public SpriteSheet(String file, int w, int h) throws IOException {
-        this.file = file;
+        this(
+            new Sprite(ImageUtils.getOrLoadImage("/sprites/player/wizardPlayer.png")),
+            w,
+            h
+        );
+    }
+
+    public SpriteSheet(Sprite sprite, int w, int h) {
         this.w = w;
         this.h = h;
-        System.out.println("Loading: " + file + "...");
-        spriteSheet = new Sprite(ImageUtils.getOrLoadImage("/sprites/player/wizardPlayer.png"));
+        spriteSheet = sprite;
+
         wSprite = spriteSheet.getImage().getWidth() / w;
         hSprite = spriteSheet.getImage().getHeight() / h;
         loadSpriteArray();

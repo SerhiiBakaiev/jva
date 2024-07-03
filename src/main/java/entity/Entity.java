@@ -43,7 +43,7 @@ public abstract class Entity extends  GameObject{
         direction = Direction.D;
         this.spriteSheet = spriteSheet;
         this.controller = controller;
-        var i = Direction.D.getAnimationRow();
+        var i = 0;
         setAnimation(i, this.spriteSheet.getSpriteArray(i), 10);
     }
 
@@ -63,17 +63,17 @@ public abstract class Entity extends  GameObject{
 
     protected void onAnimate(State state) {
         Direction newDirection = Direction.fromMotion(motion);
-        int currentAnimation = direction.getAnimationRow();
+        int currentAnimation = getAnimationRow(direction);
         if(motion.IsMoving()) {
             direction = newDirection;
-            int newRow = direction.getAnimationRow();
+            int newRow = getAnimationRow(direction);
             if(this.currentAnimation != newRow || animation.getDelay() == -1) {
                 setAnimation(currentAnimation, spriteSheet.getSpriteArray(currentAnimation), 5);
             }
             System.out.println("Moving " + direction);
         }
         else {
-            currentAnimation = direction.getAnimationRow();
+            currentAnimation = getAnimationRow(direction);
             setAnimation(currentAnimation, spriteSheet.getSpriteArray(currentAnimation), -1);
             System.out.println("Idle " + direction);
         }
@@ -108,6 +108,10 @@ public abstract class Entity extends  GameObject{
         currentAnimation = i;
         animation.setFrames(i, frames);
         animation.setDelay(delay);
+    }
+
+    protected int getAnimationRow(Direction direction) {
+        return direction.getAnimationRow();
     }
 
     public void addEffect(Effect effect) {

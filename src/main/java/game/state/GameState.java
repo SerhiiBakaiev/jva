@@ -3,6 +3,8 @@ package game.state;
 import controller.NPCController;
 import core.Size;
 import entity.Enemy;
+import entity.MiniMonster;
+import entity.MonsterFactory;
 import entity.npc.OldMan;
 import game.Input;
 import game.ui.UIGameTime;
@@ -24,7 +26,7 @@ public class GameState extends  State{
         //SelectionCircle selectionCircle = new SelectionCircle();
         //selectionCircle.setParent(_player);
         //gameObjects.add(selectionCircle);
-        initializeEnemy(0);
+        initializeEnemy(2);
         intializeNpc(0);
     }
 
@@ -43,7 +45,7 @@ public class GameState extends  State{
     }
     private  void initializeEnemy(int enemyCount){
         for (int i = 0; i < enemyCount; i++){
-            Enemy enemy = new Enemy(new NPCController(), getRandomPosition());
+            Enemy enemy = MonsterFactory.getInstance().createMiniMonster(0);
             gameObjects.add(enemy);
         }
     }
