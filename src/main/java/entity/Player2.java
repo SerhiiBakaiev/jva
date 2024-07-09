@@ -31,6 +31,7 @@ public class Player2 extends AttackingEntity {
         animation.setNumFrames(4, Direction.R.getAnimationRow() + 5);
         animation.setNumFrames(4, Direction.L.getAnimationRow() + 5);
         animation.setNumFrames(4, Direction.D.getAnimationRow() + 5);
+        setAnimation(direction.getAnimationRow(), 5);
 
     }
 

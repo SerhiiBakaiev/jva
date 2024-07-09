@@ -20,6 +20,7 @@ public class GameLoop implements  Runnable{
         _isRunning = true;
         long currentTime, lastUpdate = System.currentTimeMillis();
         double accumulator = 0.0d;
+
         _nextStatTime = System.currentTimeMillis() + 1000;
         while(_isRunning)
         {

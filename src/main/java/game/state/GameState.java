@@ -26,7 +26,7 @@ public class GameState extends  State{
         //SelectionCircle selectionCircle = new SelectionCircle();
         //selectionCircle.setParent(_player);
         //gameObjects.add(selectionCircle);
-        initializeEnemy(2);
+        initializeEnemy(0);
         intializeNpc(0);
     }
 

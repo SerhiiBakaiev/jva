@@ -105,9 +105,12 @@ public abstract class Entity extends  GameObject{
     }
 
     protected void setAnimation(int i, Sprite[] frames, int delay){
+        if(i == currentAnimation && delay != -1)
+            return;;
         currentAnimation = i;
         animation.setFrames(i, frames);
         animation.setDelay(delay);
+        System.out.println("Current animation: " + currentAnimation);
     }
 
     protected int getAnimationRow(Direction direction) {

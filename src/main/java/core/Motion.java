@@ -48,6 +48,13 @@ public class Motion {
         return movementVector;
     }
 
+    @Override
+    public String toString() {
+        return "Motion{" +
+                "movementVector=" + movementVector +
+                '}';
+    }
+
     public Vector2d applyTo(Vector2d vector) {
         return vector.add(movementVector);
     }

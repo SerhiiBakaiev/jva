@@ -7,6 +7,7 @@ import game.Settings;
 
 import java.io.IOException;
 
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main
@@ -18,7 +19,8 @@ public class Main
 
         Settings.getInstance().setDebugMode(true);
         Game game = new Game(WIDTH, HEIGHT);
-        new Thread(new GameLoop(game)).start();
+        var gm = new GameLoop(game);
+        gm.run();
 
     }
 }
