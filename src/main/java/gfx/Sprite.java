@@ -1,7 +1,5 @@
 package gfx;
 
-import core.Matrix;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
